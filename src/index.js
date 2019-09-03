@@ -17,8 +17,13 @@ app.use(express.static(publicDirectoryPath));
 io.on('connection', (socket) => {
     console.log('New websocket connection!')
 
-    socket.emit('message', generateMessage('Welcome!'))
-    socket.broadcast.emit('message', generateMessage('A new user has joined'))
+    socket.on('join', ({ username, room }) => {
+        socket.join(room)
+
+        socket.emit('message', generateMessage('Welcome!'))
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined!`))    
+    })
+
 
     socket.on('sendMessage', (msg, callback) => {
         const filter = new Filter()
@@ -27,17 +32,19 @@ io.on('connection', (socket) => {
             return callback('Profanity is not allowed!')
         }
 
-        io.emit('message', generateMessage(msg))
+        io.to('Joestars').emit('message', generateMessage(msg))
         callback()
     })
 
-    socket.on('disconnect', () => {
-        io.emit('message', generateMessage('A user has left!'))
-    })
 
     socket.on('sendLocation', (coords, callback) => {
         io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`))
         callback()
+    })
+
+    
+    socket.on('disconnect', () => {
+        io.emit('message', generateMessage('A user has left!'))
     })
 })
 
