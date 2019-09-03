@@ -19,7 +19,7 @@ socket.on('message', (message) => {
         message: message.text,
         createdAt: moment(message.createdAt).format('h:mm:s A')
     })
-    $messages.insertAdjacentHTML('afterbegin', html)
+    $messages.insertAdjacentHTML('beforebegin', html)
 })
 
 socket.on('locationMessage', (url) => {
@@ -27,7 +27,7 @@ socket.on('locationMessage', (url) => {
         url: url.url,
         createdAt: moment(url.createdAt).format('h:mm:s A')
     })
-    $messages.insertAdjacentHTML('afterbegin', html)
+    $messages.insertAdjacentHTML('beforebegin', html)
 })
 
 $messageForm.addEventListener('submit', (e) => {
