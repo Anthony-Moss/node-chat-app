@@ -18,8 +18,8 @@ app.use(express.static(publicDirectoryPath));
 io.on('connection', (socket) => {
     console.log('New websocket connection!')
 
-    socket.on('join', ({ username, room }, callback) => {
-        const { error, user } = addUser({ id: socket.id, username, room })
+    socket.on('join', (options, callback) => {
+        const { error, user } = addUser({ id: socket.id, ...options })
         
         if (error) {
             return callback(error)
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
             return callback('Profanity is not allowed!')
         }
 
-        io.to('Joestars').emit('message', generateMessage(msg))
+        io.to('joestars').emit('message', generateMessage(msg))
         callback()
     })
 
