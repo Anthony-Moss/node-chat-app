@@ -72,7 +72,9 @@ const getUsersInRoom = (room) => {
 }
 
 
-// Test calls
-
-
-// console.log(users)
+module.exports = {
+    addUser,
+    removeUser,
+    getUser,
+    getUsersInRoom
+}
