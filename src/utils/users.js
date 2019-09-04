@@ -1,9 +1,7 @@
 const users = []
 
-// addUser, removeUser, getUser, getUsersInRoom
-
 const addUser = ({ id, username, room }) => {
-    // Clean data
+    // Clean the data
     username = username.trim().toLowerCase()
     room = room.trim().toLowerCase()
 
@@ -15,23 +13,21 @@ const addUser = ({ id, username, room }) => {
     }
 
     // Check for existing user
-    const existingUser =  users.find((user) => {
+    const existingUser = users.find((user) => {
         return user.room === room && user.username === username
     })
 
     // Validate username
     if (existingUser) {
         return {
-            error: 'Username is already in use!'
+            error: 'Username is in use!'
         }
     }
 
     // Store user
     const user = { id, username, room }
     users.push(user)
-    return {
-        user
-    }
+    return { user }
 }
 
 const removeUser = (id) => {
@@ -40,37 +36,16 @@ const removeUser = (id) => {
     if (index !== -1) {
         return users.splice(index, 1)[0]
     }
-
 }
 
 const getUser = (id) => {
-    // Check for user
-    const user = users.find((user) => user.id === id)
-
-    // Validate user
-    if (!user) {
-        return {
-            error: 'User not found'
-        }
-    }
-    // return user
-    return user
+    return users.find((user) => user.id === id)
 }
 
 const getUsersInRoom = (room) => {
-    // check for users in room
-    const allUsers = users.filter((user) => user.room === room)
-
-    // Validate  user
-    if (!allUsers) {
-        return {
-            error: 'No users in this room'
-        }
-    }
-    // Return users
-    return allUsers
+    room = room.trim().toLowerCase()
+    return users.filter((user) => user.room === room)
 }
-
 
 module.exports = {
     addUser,
